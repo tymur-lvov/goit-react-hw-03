@@ -1,4 +1,4 @@
-/* html,
+html,
 body,
 div,
 span,
@@ -105,11 +105,6 @@ body {
   line-height: 1;
 }
 
-ol,
-ul {
-  list-style: none;
-}
-
 blockquote,
 q {
   quotes: none;
@@ -136,4 +131,15 @@ img {
 
 a {
   text-decoration: none;
-} */
+}
+
+ol,
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+body {
+  font-size: 24px;
+  font-weight: 500;
+}
