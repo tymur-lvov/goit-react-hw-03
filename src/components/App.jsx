@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { nanoid } from "nanoid";
+import { useState, useEffect } from "react";
 
 import ContactForm from "./ContactForm/ContactForm";
 import ContactList from "./ContactList/ContactList";
@@ -13,27 +12,41 @@ const initialContacts = [
 ];
 
 function App() {
-  const [contacts, setContacts] = useState(initialContacts);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [contacts, setContacts] = useState(() => {
+    const contacts = localStorage.getItem("contacts");
 
-  const handleFilterChange = (searchValue) => {
-    setSearchQuery(searchValue);
+    if (contacts !== null) {
+      return JSON.parse(contacts);
+    }
+    return initialContacts;
+  });
+
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
+  const addContact = (newContact) => {
+    setContacts((prevContacts) => [...prevContacts, newContact]);
   };
 
-  const handleSubmit = (values, actions) => {
-    values.id = nanoid();
-
-    setContacts((prev) => [...prev, values]);
-
-    actions.resetForm();
+  const deleteContact = (contactId) => {
+    setContacts((prevContacts) => {
+      return prevContacts.filter((contact) => contact.id !== contactId);
+    });
   };
+
+  const visibleContacts = contacts.filter((contact) => {
+    return contact.name.toLowerCase().includes(filter.toLowerCase());
+  });
 
   return (
     <div>
       <h1 style={{ textAlign: "center", marginTop: "24px" }}>Phonebook</h1>
-      <ContactForm onSubmit={handleSubmit} />
-      <SearchBox onChange={handleFilterChange} value={searchQuery} />
-      <ContactList contacts={contacts} />
+      <ContactForm onAdd={addContact} />
+      <SearchBox value={filter} onFilter={setFilter} />
+      <ContactList contacts={visibleContacts} onDelete={deleteContact} />
     </div>
   );
 }

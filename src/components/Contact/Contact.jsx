@@ -3,8 +3,8 @@ import { IoPerson } from "react-icons/io5";
 
 import s from "./Contact.module.css";
 
-function Contact({ contact }) {
-  const { name, number } = contact;
+function Contact({ contact, onDelete }) {
+  const { name, number, id } = contact;
 
   return (
     <>
@@ -19,7 +19,11 @@ function Contact({ contact }) {
             <p>{number}</p>
           </div>
         </div>
-        <button className={s.delete_button} type="button">
+        <button
+          className={s.delete_button}
+          type="button"
+          onClick={() => onDelete(id)}
+        >
           Delete
         </button>
       </li>

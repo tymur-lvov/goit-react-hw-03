@@ -1,7 +1,7 @@
 import { useId } from "react";
 import s from "./SearchBox.module.css";
 
-function SearchBox({ onChange, searchQuery }) {
+function SearchBox({ filter, onFilter }) {
   const searchFieldId = useId();
 
   return (
@@ -11,10 +11,10 @@ function SearchBox({ onChange, searchQuery }) {
       </label>
       <input
         className={s.input}
-        onChange={(event) => onChange(event.target.value)}
-        value={searchQuery}
         id={searchFieldId}
         type="text"
+        value={filter}
+        onChange={(event) => onFilter(event.target.value)}
       />
     </>
   );

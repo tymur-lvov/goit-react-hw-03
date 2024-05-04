@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { nanoid } from "nanoid";
 import { useId } from "react";
 
 import s from "./ContactForm.module.css";
@@ -20,15 +21,23 @@ const initialValues = {
   number: "",
 };
 
-function ContactForm({ onSubmit }) {
+function ContactForm({ onAdd, deleteContact }) {
   const nameFieldId = useId();
   const numberFieldId = useId();
+
+  const handleSubmit = (values, actions) => {
+    values.id = nanoid();
+
+    onAdd(values);
+
+    actions.resetForm();
+  };
 
   return (
     <>
       <Formik
         initialValues={initialValues}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <Form className={s.form}>
